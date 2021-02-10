@@ -7,18 +7,29 @@
 // The assets (and code) can be found at: https://github.com/photonstorm/phaser3-examples
 // You will need to change the paths you pass to `this.load.image()` or any other
 // loading functions to reflect where you are putting the assets.
-// All loading functions will typically all be found inside `preload()`.
+// All loading functions will typically all be found inside `preload()`.'
+
+const game = new Phaser.Game({
+    type: Phaser.AUTO,
+    parent: 'game',
+    width: 800,
+    height: 600,
+    // Phaser converts a dictionary of methods into a Scene subclass.
+    scene: { preload: preload, create: create, update: update },
+    physics: { default: 'arcade' },
+    });
 
 function preload() {
     // Load an image and call it 'logo'.
-    this.load.image( 'logo', 'assets/phaser.png' );
+    this.load.image( 'char', 'assets/nugget.png' );
+    this.load.image('background','assets/mcdonalds.jpg')
 }
 
 let bouncy;
 
 function create() {
     // Create a sprite at the center of the screen using the 'logo' image.
-    bouncy = this.physics.add.sprite( this.cameras.main.centerX, this.cameras.main.centerX, 'logo' );
+    bouncy = this.physics.add.sprite( this.cameras.main.centerX, this.cameras.main.centerX, 'char' );
     
     // Make it bounce off of the world bounds.
     bouncy.body.collideWorldBounds = true;
@@ -45,12 +56,4 @@ function update() {
     bouncy.rotation = this.physics.accelerateToObject( bouncy, this.input.activePointer, 500, 500, 500 );
 }
 
-const game = new Phaser.Game({
-    type: Phaser.AUTO,
-    parent: 'game',
-    width: 800,
-    height: 600,
-    // Phaser converts a dictionary of methods into a Scene subclass.
-    scene: { preload: preload, create: create, update: update },
-    physics: { default: 'arcade' },
-    });
+
