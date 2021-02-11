@@ -19,71 +19,104 @@ body
 <body>
 <div id="game"></div>
 <div id="readme">
-<h2>Your game title</h2>
+<h2>Super McDonalds Smash</h2>
 
 <ul>
 <li><strong>Originality:</strong>
-aye its the first game ever played</li>
+This game takes 'Food Fight' to a whole nother' level! 
+
+It's a fighting game where the characters are food!
+</li>
 
 <li><strong>Technical Merit:</strong>
-What is interesting about your game technology?
+I was able to incorporate health bar and hit boxes for the characters to interact. 
+I also added a feature where if a player holds down a keyboard longer, their character moves faster in the game.
 </li>
 
 <li><strong>Prototype Postmortem:</strong>
-What did you learn from this prototype?
-What was the easiest or hardest part of making it?
+I learned that game designing is hard!
+
+Personally the hardest part of making it was going through documentations and example to learn about what things do what
+and how they interact with things. The easiest thing for me was seeing my code come to life, which helped me a lot with
+making changes along the way. 
 </li>
 
 <li><strong>Prototype Assets:</strong>
-Did you make your prototype assets from scratch? Did you borrow them? Cite your sources here.
 <ul>
-<li>Bouncing Phaser image: <a href="https://phaser.io/download/logo">Phaser logo</a></li>
+<li>Chicken Nugget (i edited glow): <a href="https://www.cleanpng.com/png-burger-king-chicken-nuggets-clip-art-portable-netw-7153984/">Chicken Nugget</a></li>
+<li>French Fry (i edited glow and rotation): <a href="https://www.clipartmax.com/middle/m2i8m2b1G6N4N4d3_copy-link-single-french-fry/">French Fry</a></li>
+<li>Green Health Bar: <a href="https://gblobscdn.gitbook.com/assets%2F-LDgX-RykK9XCDxfIhX_%2F-LDgX7Ifr9nc11ubI925%2F-LDgX8bHCaoxiL6fbi-S%2Fhealth-green.png?alt=media">Green Health Bar:</a></li>
+<li>Red Health Bar: <a href="https://gblobscdn.gitbook.com/assets%2F-LDgX-RykK9XCDxfIhX_%2F-LDgX7Ifr9nc11ubI925%2F-LDgX8bHCaoxiL6fbi-S%2Fhealth-green.png?alt=media">Red Health Bar:</a></li>
+<li>Mortal Kombat Audio: <a href="https://www.youtube.com/watch?v=EAwWPadFsOA">Mortal Kombat Sound</a></li>
+<li>McDonalds Background : <a href="https://phaser.io/download/logo">McDonalds Background</a></li>
+<li>Platform for Characters: <a href="https://github.com/photonstorm/phaser3-examples/blob/master/public/src/games/firstgame/assets/platform.png">Platform Image</a></li>
 </ul>
 </li>
 
 <li><strong>Prototype Closest Other Game:</strong>
-Which other game most closely resembles your game? If you are borrowing code from a Phaser Example, you must say so here. If you borrow code from elsewhere, you must say so here.
+I wanted to make my game into a fighting game. My game started out using the Phaser Example called "firstgame".
+
+This helped me with getting my characters walking on a platform, and with collisions. I wasn't able to find any examples that used my template with no class
+and has a fighting style to i tried to stitch a bunch of resources I found from the documentation and general questions I had.  
+
+These two website helped me understand collision and how health works in phaser. 
+The two websites: https://docs.idew.org/video-game/project-references/phaser-coding/physics-and-collisions & https://docs.idew.org/video-game/project-references/phaser-coding/sprites-animations-and-health. 
+
+I also used the documentation for tweens, keyboard input, and audio.
 </li>
 
 <li><strong>High Concept:</strong>
-A one-sentence summary of your game.
+A fighting game where you choose either a nugget or french fry to stomp and kill your opponent.
+
 </li>
 
 <li><strong>Theme:</strong>
-State which of the Storymatic themes you used.
+I picked the challenge of "must be played with someone else".
 </li>
 
 <li><strong>Mandated Variety:</strong>
-State which input, randomness, genre, and play style you used in this prototype.
+<ul>
+Input: keyboard
+Randomness: deterministic
+Play Style: Competitor
+Genre: fighting
+</ul>
 </li>
 
 <li><strong>Prototype Goal:</strong>
-What game mechanic is this prototype evaluating?
+The game mechanic that this prototype is evaluating is sprite collision, to use as attacking, and how that
+sprite collision reacts with its health bar. 
 </li>
 
 <li><strong>Player Experience Goals:</strong>
-What experience do you want players to have when playing your game?
+I want my players to experience trial and error and have them strategize what approach is best to take down the opponent. 
 </li>
 
 <li><strong>Gameplay:</strong>
-A paragraph describing the actions the player can perform, the system dynamics, and the core mechanic. Include a concise explanation of the prototype’s inputs and their expected effects (how to play). You can also describe game play that is not in the prototype. You may include mock-up images for parts of the game not in the prototype.
+In this prototype the player picks either the nugget or the french fry to fight. Since it's a co-op game the other player will choose
+the other character. Ideally I would have wanted a single player option where the other character is an AI. The instructions display on the screen for a short while. The nugget moves left, right, and up 
+with the arrow keys respectively. While the french fry moves left, right, and up with the a, d, and w keys on the keyboard. If the characters hold on their left and right for a longer time they are able to move faster. Since the platform is slippery the momentum is conserved. Each player attemtps
+ to jump and move around on the other's head to deal damage, but the played being jumped on can move around and jump to deal damage back. Each time a player deals damage their respective health bars will display the damage being done in real-time. Once a player deals enough damage the health bar of the opponent will be red and the 
+ winning screen will display the winner and all keyboard inputs are disabled, where ideally a restart button would appear and restart the game. 
 </li>
 
 <li><strong>Strategies:</strong>
-What player strategies do you expect will be effective at playing this game?
+Some player strategies that I expect is whether playing defensive is better than offensive, faster better than slower, or if counter-attacking by letting the opponent stomp on you is more beneficial. 
 </li>
 
 <li><strong>Story/Setting/Premise:</strong>
-A paragraph about the world your game is set in and who the characters are. What makes the game world and its occupants unique and interesting? Do the tokens represent something? If the game has a backstory, mention it here. If the game is abstract, then say so.
-How will the dramatic tension interact with the gameplay tension?
+The setting is a McDonalds. 
+The nugget and french fry were minding their own business when they overheard some customers arguing which is better, the nugget or the french fry. 
+The nugget and french fry turned to each other and started to argue about which one of them was better. They decided that a brawl was the only way to settle it! 
+Pick your side and fight for it!
 </li>
 
 <li><strong>Target Audience:</strong>
-A single sentence that describes the demographic you're trying to reach.
+The target audience are people that like fighting games and/or people that are passionate about McDonalds fast food. 
 </li>
 
 <li><strong>Play Time:</strong>
-How long does your game take to play?
+My game takes rougly about 2-5 minutes.
 </li>
 
 </ul>
