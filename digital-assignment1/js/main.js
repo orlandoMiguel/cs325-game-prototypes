@@ -25,7 +25,7 @@ const game = new Phaser.Game({
     });
 
 function preload() {
-    // Load an image and call it 'logo'.
+    // Loads all the assests used in this prototype.
     this.load.image( 'char1', 'assets/nugget.png' );
     this.load.image( 'char2', 'assets/fry.png' );
     this.load.image('background','assets/mcdonalds.jpg');
@@ -37,6 +37,7 @@ function preload() {
 
 }
 
+// declaring variables
 let player1
 let player2
 let cursors
@@ -54,35 +55,30 @@ let gameover
 
 function create() {
 
+    // keeps track of the speed of each player
     speed1 = 0;
     speed2 = 0;
+
     // creates the background of the game
     const back = this.add.image(400,300,'background');
     back.scale = 0.555;
 
+    // create platform for characters to stand - this was borrowed from Phaser example
+    // 'firstgame' I used the platforms and the collisions
     platforms = this.physics.add.staticGroup();
     platforms.create(400, 640, 'ground').setScale(2).refreshBody();
     platforms.tint = 'black';
 
+    // triggers mortal combat audio
     const ding = this.sound.add("fight_music", {loop: false});
     ding.play();
 
-
-
-    // Create a sprite at the center of the screen using the 'logo' image.
+    // places the two sprites on the board in their corners 
     player1 = this.physics.add.sprite( 0,0, 'char1' );
-    player1.health = 100;
-    player1.maxHealth = 100;
-
     player2 = this.physics.add.sprite( 750,0, 'char2' );
     player2.scale = 0.15;
-    player2.health = 100;
-    player2.maxHealth = 100;
 
-    // healthbar = this.physics.add.sprite(0,0,'healthbar');
-    // healthbar.width = player1.width;
-
-    // Nugget Health Bar
+    // Nugget Health Bar - this code was adjusted and borrowed from the website listed in the index.html with health bars
     var backgroundBar = this.add.image(4, 200, 'redhealth');
     backgroundBar.setOrigin(0,0);
     backgroundBar.fixedToCamera = true;
@@ -91,7 +87,6 @@ function create() {
     healthBar.setOrigin(0,0);
     healthBar.fixedToCamera = true;
     
-
     var healthLabel = this.add.text(4, 180, 'Nugget', {fontSize:'20px', fill:'#ffffff', stroke: "black", strokeThickness: 3});
     healthLabel.fixedToCamera = true;
 
@@ -104,14 +99,8 @@ function create() {
     healthBar1.setOrigin(0,0);
     healthBar1.fixedToCamera = true;
 
-
     var healthLabel1 = this.add.text(675, 180, 'French Fry', {fontSize:'20px', fill:'#ffffff', stroke: "black", strokeThickness: 3});
     healthLabel1.fixedToCamera = true;
-
-    // used to decrease sprite health and scale health bar
-    // player.damage(10);
-    // healthBar.scale.setTo(player.health / player.maxHealth, 1);
-
     
     // Make it bounce off of the world bounds.
     player1.body.collideWorldBounds = true;
@@ -119,7 +108,7 @@ function create() {
 
     
     // Add some text using a CSS style.
-    // Center it in X, and position its top 15 pixels from the top of the world.
+    // Adds the controls, rules, and the game title onto the game
     let style = { font: "40px Comic Sans MS", fill: "black", align: "center" , backgroundColor: "white"};
     let text = this.add.text( this.cameras.main.centerX, 15, "~Super McDonalds Smash~", style );
     text.setOrigin( 0.5, 0.0 );
@@ -127,10 +116,11 @@ function create() {
     let controls = this.add.text( this.cameras.main.centerX, 250, "Nugget Movement -  left: ←  jump: ↑  right: →\n\n \
     French Fry Movement -  left: 'a'  jump: 'w'  right: 'd'", style2).setInteractive();
     controls.setOrigin(0.5,0.0);
-    let style3 = { font: "30px Comic Sans MS", fill: "black", align: "center", stroke: "white", strokeThickness: 4};
     let rules = this.add.text( this.cameras.main.centerX, 100, "Be quick and stomp the player to attack!\n But be careful, the floor is slippery!", style2).setInteractive();
     rules.setOrigin(0.5,0.0);
 
+    // these tweens are for the controls and rules text
+    // borrowed and used from the Phaser documentation on tweens
     this.tweens.add({
         targets: controls,
         alpha: 0,
@@ -143,26 +133,23 @@ function create() {
         duration: 10000,
     }, this);
     
+    // assigns the cursors and keys as inputs, documentation and Phaser example
+    // helped with the code
     cursors = this.input.keyboard.createCursorKeys();
     keyA = this.input.keyboard.addKey('A');
     keyW = this.input.keyboard.addKey('W');
     keyD = this.input.keyboard.addKey('D');
 
+    // Adds collision to the players and the platform
+    // Used documentation and the second website listed in the HTMl with collisions
     this.physics.add.collider(player1, platforms);
     this.physics.add.collider(player2, platforms);
     this.physics.add.collider(player1, player2, contact, null, this);   
 }
 
 function update() {
-    // Accelerate the 'logo' sprite towards the cursor,
-    // accelerating at 500 pixels/second and moving no faster than 500 pixels/second
-    // in X or Y.
-    // This function returns the rotation angle that makes it visually match its
-    // new trajectory.
-    // player1.rotation = this.physics.accelerateToObject( player1, this.input.activePointer, 500, 500, 500 );
-
-    console.log(gameover)
-
+    
+    // checks to see if game is over then disables movement from players
     if (gameover == 1)
     {
         player1.setVelocityX(0);
@@ -171,6 +158,7 @@ function update() {
     }
 
     // Player 1 Movement
+    // Movement code was helped and found from same place as input
     if (cursors.left.isDown && cursors.right.isDown)
         player1.setVelocityX(0);
 
@@ -227,8 +215,13 @@ function update() {
     }    
 }
 
+// This is called when the players collide with each other
+// the same website used with collision helped me to learn about function calls
+// within collisions
 function contact (player1, player2)
 {
+    // if any of the players health is 0 then the game is over
+    // and a player win screen is displayed
     if (healthBar1.scaleX <= 0.0 || healthBar.scaleX <= 0.0)
     {
         console.log('player died'); 
@@ -253,6 +246,8 @@ function contact (player1, player2)
 
     else
     {
+        // if statement checks the speed and compares it. depending on who is moving
+        // faster deal damage according, and scale health bar accordingly
         if (Math.abs(player1.body.velocity.x) > Math.abs(player2.body.velocity.x))
         {
             console.log(healthBar1.scaleX)
