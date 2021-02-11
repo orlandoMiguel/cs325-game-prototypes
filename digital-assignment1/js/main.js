@@ -9,6 +9,7 @@
 // loading functions to reflect where you are putting the assets.
 // All loading functions will typically all be found inside `preload()`.'
 
+
 const game = new Phaser.Game({
     type: Phaser.AUTO,
     parent: 'game',
@@ -16,35 +17,73 @@ const game = new Phaser.Game({
     height: 600,
     // Phaser converts a dictionary of methods into a Scene subclass.
     scene: { preload: preload, create: create, update: update },
-    physics: { default: 'arcade' },
+    physics: { default: 'arcade',
+                arcade: {
+                    gravity: {y:500},
+                    debug: false
+        }}
     });
 
 function preload() {
     // Load an image and call it 'logo'.
-    this.load.image( 'char', 'assets/nugget.png' );
-    this.load.image('background','assets/mcdonalds.jpg')
+    this.load.image( 'char1', 'assets/nugget.png' );
+    this.load.image( 'char2', 'assets/fry.png' );
+    this.load.image('background','assets/mcdonalds.jpg');
+    this.load.image('ground','assets/platform.png');
+
 }
 
-let bouncy;
+let player1
+let player2
+let cursors
+let platforms
+let floor
+let keyA
+let keyW
+let keyD
+
 
 function create() {
+    // creates the background of the game
+    const back = this.add.image(400,300,'background');
+    back.scale = 0.555;
+
+    platforms = this.physics.add.staticGroup();
+    platforms.create(400, 640, 'ground').setScale(2).refreshBody();
+    platforms.tint = 'black';
+
+
+
     // Create a sprite at the center of the screen using the 'logo' image.
-    bouncy = this.physics.add.sprite( this.cameras.main.centerX, this.cameras.main.centerX, 'char' );
+    player1 = this.physics.add.sprite( 0,0, 'char1' );
+    player2 = this.physics.add.sprite( 750,0, 'char2' );
+    player2.scale = 0.3
+
+    // used to change the sprites color
+    // player1.tint = 
     
     // Make it bounce off of the world bounds.
-    bouncy.body.collideWorldBounds = true;
-    
-    // Make the camera shake when clicking/tapping on it.
-    bouncy.setInteractive();
-    bouncy.on( 'pointerdown', function( pointer ) {
-        this.scene.cameras.main.shake(500);
-        });
+    player1.body.collideWorldBounds = true;
+    player2.body.collideWorldBounds = true;
+
     
     // Add some text using a CSS style.
     // Center it in X, and position its top 15 pixels from the top of the world.
-    let style = { font: "25px Verdana", fill: "#9999ff", align: "center" };
-    let text = this.add.text( this.cameras.main.centerX, 15, "Build something amazing.", style );
+    let style = { font: "40px Comic Sans MS", fill: "black", align: "center" , backgroundColor: "white"};
+    let text = this.add.text( this.cameras.main.centerX, 15, "~Super McDonalds Smash~", style );
     text.setOrigin( 0.5, 0.0 );
+
+    cursors = this.input.keyboard.createCursorKeys();
+    keyA = this.input.keyboard.addKey('A');
+    keyW = this.input.keyboard.addKey('W');
+    keyD = this.input.keyboard.addKey('D');
+
+    
+
+    this.physics.add.collider(player1, platforms);
+    this.physics.add.collider(player2, platforms);
+
+
 }
 
 function update() {
@@ -53,7 +92,49 @@ function update() {
     // in X or Y.
     // This function returns the rotation angle that makes it visually match its
     // new trajectory.
-    bouncy.rotation = this.physics.accelerateToObject( bouncy, this.input.activePointer, 500, 500, 500 );
+    // player1.rotation = this.physics.accelerateToObject( player1, this.input.activePointer, 500, 500, 500 );
+
+    // Player 1 Movement
+    if (cursors.left.isDown)
+    {
+        player1.setVelocityX(-160);
+    }
+
+    else if (cursors.right.isDown)
+    {
+        player1.setVelocityX(160);
+    }
+
+    else
+    {
+        player1.setVelocityX(0);
+    }
+
+    if (cursors.up.isDown && player1.body.touching.down)
+    {
+        player1.setVelocityY(-330);
+    }
+
+    // Player 2 Movement
+    if (keyA.isDown)
+    {
+        player2.setVelocityX(-160);
+    }
+
+    else if (keyD.isDown)
+    {
+        player2.setVelocityX(160);
+    }
+
+    else
+    {
+        player2.setVelocityX(0);
+    }
+
+    if (keyW.isDown && player2.body.touching.down)
+    {
+        player2.setVelocityY(-330);
+    }    
 }
 
 
