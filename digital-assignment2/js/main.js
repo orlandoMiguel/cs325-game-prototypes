@@ -1,5 +1,7 @@
 import "./phaser.js";
 
+// Two scenes were created to display if the player chooses the wrong or the right wire
+// The Phaser example that I used was called Change Scene https://phaser.io/examples/v3/view/game-objects/lights/change-scene
 class gameOver extends Phaser.Scene{
     constructor ()
     {
@@ -34,6 +36,7 @@ class winner extends Phaser.Scene{
 
 }
 
+// Game making config
 var config = {
     type: Phaser.AUTO,
     width: 800,
@@ -47,6 +50,7 @@ var config = {
     },gameOver,winner]
 };
 
+// All the global varibales
 let image;
 let bomb;
 var text;
@@ -73,6 +77,7 @@ let decide = 0;
 
 var game = new Phaser.Game(config);
 
+// Loads all my images as well as creates a center for the screen
 function preload ()
 {
     this.load.image('nugget', 'assets/nugget.png');
@@ -84,6 +89,7 @@ function preload ()
     screenCenterY = this.cameras.main.worldView.y + this.cameras.main.height / 2;
 }
 
+// creates the images and places them in the game
 function create ()
 {
     bomb = this.add.image(680, 300, 'bomb');
@@ -92,8 +98,9 @@ function create ()
     bomb.setScale(0.15);
 
 
-    // cursor = this.input.setDefaultCursor('url(assets/scissor.png), pointer');
-
+    // creates all the wire and starting with the pathing
+    // They each call the function I created and distinguished them
+    // uses the random expression
     graphics = this.add.graphics();
     wire1 = wiresMade(Math.random(),0x00FF00,1,210);
     wire2 =wiresMade(Math.random(),0x0000FF,4,225);
@@ -105,16 +112,18 @@ function create ()
     wire8 =wiresMade(Math.random(),0x0000FF,6,315);
     wire9 =wiresMade(Math.random(),0xFF0000,9,330);
 
-    console.log(wire1.getEndPoint().x);
 
+    // Displays the Rules
     let style = { font: "20px Comic Sans MS", fill: "white", align: "center" };
-    let rules = this.add.text( this.cameras.main.centerX, 100, "To defuse the bomb and win the game \n choose the right wire number (top to bottom)!", style );
+    let rules = this.add.text( this.cameras.main.centerX, 100, "To defuse the bomb and win the game \n click the wire number (top to bottom) that is attached to the clock!", style );
     rules.setOrigin( 0.5, 0.0 );
     
+    // Makes all the numbers on the bottom of the screen interactive
+    // Found website with Phaser that helped me undersand clickable objects
+    // https://phasergames.com/phaser-3-basics-images-text-and-click/
     let style2 = { font: "30px Comic Sans MS", fill: "white", align: "center", backgroundColor: '#808080' };
     let num1 = this.add.text( 200, 450, " 1 ", style2 );
     num1.setInteractive();
-    // num1.events.onInputDown.add(this.down, this);
     this.input.on('gameobjectdown',onObjectClicked,6);
 
     let num2 = this.add.text( 250, 450, " 2 ", style2 );
@@ -143,11 +152,13 @@ function create ()
 
     text = this.add.text(32, 32);
 
- 
+    // Timed Event taken from a phaser example https://phaser.io/examples/v2/time/custom-timer
     timedEvent = this.time.addEvent({ delay: 1000, callback: onEvent, callbackScope: this, repeat:19 });
 
 }
 
+// Displays the time remaining and once a number is picked
+// it will display either win or lose screen
 function update ()
 {
     
@@ -161,6 +172,7 @@ function update ()
         null;
 }
 
+// Once the timer reaches 0 end the game
 function onEvent ()
 {
     seconds--;
@@ -170,6 +182,9 @@ function onEvent ()
 
 }
 
+// wire for functions made
+// I used a phaser example for making paths and used that as my wire
+// phaser example https://phaser.io/examples/v3/view/paths/complex-path-bounds
 function wiresMade(randomNum, color, num, order){
     let path = new Phaser.Curves.Path(135, order);
     graphics.lineStyle(2, color, 0.5);
@@ -194,6 +209,7 @@ function wiresMade(randomNum, color, num, order){
 
 }
 
+// Function that gets called when the numbers are clicked
 function onObjectClicked(pointer,gameObject,num)
     {
         let wire_array = [wire1,wire2,wire3,wire4,wire5,wire6,wire7,wire8,wire9];
@@ -204,8 +220,6 @@ function onObjectClicked(pointer,gameObject,num)
             decide =  1;
         else
             decide =  2;
-
-        
     }
 
 
