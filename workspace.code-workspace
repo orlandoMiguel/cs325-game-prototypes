@@ -1,0 +1,13 @@
+{
+  "folders": [
+	{
+		"path": "."
+	},
+	{
+		"path": "../../CS465 - Computer Architecture/project1"
+	}
+],
+  "settings": {
+    "liveServer.settings.multiRootWorkspaceName": "cs325-game-prototypes"
+  }
+}
