@@ -11,6 +11,9 @@ import "./phaser.js";
 
 // The simplest class example: https://phaser.io/examples/v3/view/scenes/scene-from-es6-class
 
+let cursors;
+let element;
+
 class MyScene extends Phaser.Scene {
     
     constructor() {
@@ -25,12 +28,12 @@ class MyScene extends Phaser.Scene {
         
         // Load a tilemap and call it 'map'.
         // You can load from Tiled's JSON format:
-        this.load.tilemapTiledJSON( 'map', 'assets/tilemap_example.json' );
+        this.load.tilemapTiledJSON( 'map', 'assets/rougelike.json' );
         // Or from a .csv file:
         // this.load.tilemapCSV( 'map', 'assets/tilemap_example.csv' );
         
         // Load the tiles (images) for the map.
-        this.load.image( 'tiles', 'assets/tiles.png' );
+        this.load.image( 'tiles', 'assets/roguelikeSheet_transparent.png' );
     }
     
     create() {
@@ -40,33 +43,45 @@ class MyScene extends Phaser.Scene {
         // let map = this.make.tilemap({ key: 'map', tileWidth: 32, tileHeight: 32 });
         
         // Add the tiles (images) to the map.
-        let tileset = map.addTilesetImage( 'tiles' );
+        let tileset = map.addTilesetImage('roguelikeSheet_transparent','tiles' );
         
         // Create a layer from the map using the name given in the JSON file:
-        let layer = map.createLayer( 'Tile Layer 1', tileset );
-        // For CSV files, the layer is a number:
-        // let layer = map.createLayer( 0, tileset );
+        let ground = map.createLayer( 'Ground', tileset );
+        let water = map.createLayer( 'Water', tileset );
+        let colliders = map.createLayer( 'Colliders', tileset );
+
+
+        ground.setCollisionByProperty({collide : true})
+        water.setCollisionByProperty({collide : true})
+        colliders.setCollisionByProperty({collide : true})
+
+        
+
+        // For CSV files, the ground is a number:
+        // let ground = map.createground( 0, tileset );
         
         // Set the camera and world bounds to the tilemap's bounds.
-        // Make the layer's origin the top-left corner.
-        layer.setOrigin(0,0);
-        this.physics.world.setBounds( layer.x, layer.y, layer.width, layer.height );
-        this.cameras.main.setBounds( layer.x, layer.y, layer.width, layer.height );
+        // Make the ground's origin the top-left corner.
+        // ground.setOrigin(0,0);
+        this.physics.world.setBounds( ground.x, ground.y, ground.width, ground.height );
+        this.cameras.main.setBounds( ground.x, ground.y, ground.width, ground.height );
         
         // Create a sprite at the center of the screen using the 'logo' image.
-        this.bouncy = this.physics.add.sprite( this.cameras.main.centerX, this.cameras.main.centerX, 'logo' );
+        element = this.physics.add.sprite( this.cameras.main.centerX, this.cameras.main.centerX, 'logo' );
+        element.setScale(0.05)
         
         // Tell the camera to follow the sprite.
-        this.cameras.main.startFollow( this.bouncy, true, 0.08, 0.08 );
+        this.cameras.main.startFollow( element, true, 0.08, 0.08 );
+        this.cameras.main.setZoom(3)
         
         // Make it bounce off of the world bounds.
-        this.bouncy.body.collideWorldBounds = true;
+        element.body.collideWorldBounds = true;
         
         // Make the camera shake when clicking/tapping on it.
-        this.bouncy.setInteractive();
-        this.bouncy.on( 'pointerdown', function( pointer ) {
-            this.scene.cameras.main.shake(500);
-            });
+        // this.bouncy.setInteractive();
+        // this.bouncy.on( 'pointerdown', function( pointer ) {
+        //     this.scene.cameras.main.shake(500);
+        //     });
         
         // Add some text using a CSS style.
         // Center it in X, and position its top 15 pixels from the top of the world.
@@ -75,19 +90,44 @@ class MyScene extends Phaser.Scene {
         text.setOrigin( 0.5, 0.0 );
         // The text shouldn't scroll with the camera.
         text.setScrollFactor(0);
+        cursors = this.input.keyboard.createCursorKeys();
+        this.physics.add.collider(element,water)
+        this.physics.add.collider(element,colliders)
+
+
     }
     
     update() {
+
+        element.body.setVelocity(0);
+
+        if (cursors.left.isDown)
+        {
+            element.body.setVelocityX(-100);
+        }
+        else if (cursors.right.isDown)
+        {
+            element.body.setVelocityX(100);
+        }
+
+        if (cursors.up.isDown)
+        {
+            element.body.setVelocityY(-100);
+        }
+        else if (cursors.down.isDown)
+        {
+            element.body.setVelocityY(100);
+        }
         // Accelerate the 'logo' sprite towards the cursor,
         // accelerating at 500 pixels/second and moving no faster than 500 pixels/second
         // in X or Y.
         // This function returns the rotation angle that makes it visually match its
         // new trajectory.
-        this.bouncy.rotation = this.physics.accelerateToObject(
-            this.bouncy,
-            this.input.activePointer.positionToCamera(this.cameras.main),
-            500, 500, 500
-            );
+        // this.bouncy.rotation = this.physics.accelerateToObject(
+        //     this.bouncy,
+        //     this.input.activePointer.positionToCamera(this.cameras.main),
+        //     500, 500, 500
+        //     );
     }
 }
 
