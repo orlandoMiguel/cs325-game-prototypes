@@ -36,7 +36,7 @@ export default class game extends Phaser.Scene{
 
         // this block keeps track of the splimes positions using Tiled and makes sure that each splime si able to collide with not
         // only the player but also the landscape
-        let enemy = this.physics.add.group({key:'slimeboi',quantity:-1,bounceX:1,bounceY:1,velocityY:10,velocityX:10});
+        let enemy = this.physics.add.group({key:'slimeboi',quantity:-1,bounceX:1,bounceY:1,velocityY:17,velocityX:17});
         enemy.enableBody = true;
         let slimearray = map.createFromObjects('enemies',{name:'slimey',key:'slimeboi'});
         enemy_counter = slimearray.length;
@@ -140,7 +140,7 @@ export default class game extends Phaser.Scene{
 function onEvent ()
 {
     seconds--;
-    if (seconds === -1)
+    if (seconds === 0)
     {
         w_or_l = 0
         this.scene.start('gameover',{id:w_or_l})
